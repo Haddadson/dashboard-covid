@@ -5,6 +5,7 @@ using RestSharp.Serializers;
 
 namespace DashboardCovid.Shared
 {
+    //Responsável por efetuar a serialização e deserialização de itens para JSON
     public class Serializador : ISerializer, IDeserializer
     {
         private static Serializador _instancia;

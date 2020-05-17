@@ -4,6 +4,7 @@ using System.Net;
 
 namespace DashboardCovid.Shared
 {
+    //Estrutura para facilitar o uso de requisições Http à APIs externas
     public class RestClientBase : RestClient
     {
         protected RestRequest Request;

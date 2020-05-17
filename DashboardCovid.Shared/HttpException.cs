@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace DashboardCovid.Shared
 {
+    //Exceção para requests Http 
     [Serializable]
     public class HttpException : Exception
     {

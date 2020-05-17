@@ -4,6 +4,7 @@ using System;
 
 namespace DashboardCovid.Shared
 {
+    //Configurações para facilitar o acesso do appsettings
     public static class IServiceCollectionExtension
     {
         public static TConfig ConfigureAppConfiguration<TConfig>(this IServiceCollection services, 

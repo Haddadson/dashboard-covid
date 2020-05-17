@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace DashboardCovid.Controllers
 {
+    //Controller para tela de login e CRUD do administrador
     public class AdminController : Controller
     {
         private const string LOGIN = "admin";
@@ -13,6 +14,7 @@ namespace DashboardCovid.Controllers
         private readonly IPaisService paisService;
         private readonly IInfeccaoPaisService infeccaoPaisService;
 
+        //Construtor que recebe instâncias das classes por injeção de dependência
         public AdminController(IPaisService paisService,
             IInfeccaoPaisService infeccaoPaisService)
         {
@@ -21,6 +23,7 @@ namespace DashboardCovid.Controllers
         }
         
         [HttpGet]
+        //Action inicial, verifica se o Administrador está autenticado e redireciona para o login ou para a página de CRUD
         public IActionResult Index()
         {
             bool autenticado = TempData["Autenticado"] != null && (bool)TempData["Autenticado"];
@@ -31,6 +34,7 @@ namespace DashboardCovid.Controllers
                 TempData["Autenticado"] = true;
                 TempData.Keep();
 
+                //Lista os registros de infecções e os países disponíveis para cadastro
                 var infeccoes = infeccaoPaisService.Listar().MapearInfeccaoPaisesParaModel();
                 var paises = paisService.ListarPaises().MapearPaisesParaModel();
                 ViewData["Paises"] = paises.Select(p => p.Pais).ToList();
@@ -43,6 +47,7 @@ namespace DashboardCovid.Controllers
         }
 
         [HttpPost]
+        //Action para realizar a autenticação do administrador
         public IActionResult Index(string login, string senha)
         {
             bool autenticado = (login == LOGIN && senha == SENHA) || 
@@ -54,6 +59,7 @@ namespace DashboardCovid.Controllers
 
             if (autenticado)
             {
+                //Lista os registros de infecções e os países disponíveis para cadastro
                 var infeccoes = infeccaoPaisService.Listar().MapearInfeccaoPaisesParaModel();
                 var paises = paisService.ListarPaises().MapearPaisesParaModel();
                 ViewData["Paises"] = paises.Select(p => p.Pais).ToList();
@@ -68,6 +74,7 @@ namespace DashboardCovid.Controllers
         }
 
         [HttpPost]
+        //Action para criar um novo registro ou atualizar um existente 
         public IActionResult CriarOuAtualizar(string pais, string casosConfirmados, string mortes, string recuperados)
         {
             bool sucesso;
@@ -87,6 +94,7 @@ namespace DashboardCovid.Controllers
             return RedirectToAction("ControleDashboard", new { sucesso, msgErro });
         }
 
+        //Action para remover um registro de infecção por ID
         public IActionResult Remover(string infeccaoId)
         {
             bool sucesso = infeccaoPaisService.RemoverPorId(infeccaoId);
@@ -94,6 +102,8 @@ namespace DashboardCovid.Controllers
             return RedirectToAction("ControleDashboard", new { sucesso });
         }
 
+        //Action para redirecionar o administrador para a tela de CRUD
+        //Verifica se está autenticado e envia para a tela de login caso não esteja
         public IActionResult ControleDashboard(bool? sucesso = null, string msgErro = null)
         {
             bool autenticado = TempData["Autenticado"] != null && (bool)TempData["Autenticado"];
@@ -125,6 +135,7 @@ namespace DashboardCovid.Controllers
             return View("ControleDashboard");
         }
 
+        //Action responsável por efetuar o logout, removendo a autenticação
         public IActionResult Logout()
         {
             ViewData["Autenticado"] = null;

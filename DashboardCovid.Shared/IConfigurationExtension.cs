@@ -2,6 +2,7 @@
 
 namespace DashboardCovid.Shared
 {
+    //Configurações para facilitar o uso de acesso de registros do appsettings
     public static class IConfigurationExtension
     {
         public static IConfiguration ObterConfiguracao(this IConfiguration configuration)

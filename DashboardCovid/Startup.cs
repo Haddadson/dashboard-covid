@@ -32,16 +32,22 @@ namespace DashboardCovid
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        //Configura injeção de serviços para uso posterior
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            //Configuração da injeção de dependência
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            //Configuração do contexto do banco de dados
             services.AddDbContext<DashboardCovidContexto>(options => options.UseSqlite($"Data Source={env.ContentRootPath}/dashboardCovid.db"));
+
+            //Configuração das configurações presentes no appsettings
             services.ConfigureAppConfiguration<Aplicacao>(Configuration.ObterConfiguracao());
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        //Configurações pré-definidas para execução da aplicação
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -51,7 +57,6 @@ namespace DashboardCovid
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -69,6 +74,7 @@ namespace DashboardCovid
             });
         }
 
+        //Configura container para injeção de dependências 
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.AddAutofacServiceProvider();
