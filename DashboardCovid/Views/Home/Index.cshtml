@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Dashboard - COVID-19</h1>
+    <p>Aplicação construída para a disciplina de Laboratório de Desenvolvimento de Aplicações Móveis e Distribuídas</p>
+    <p>Engenharia de Software - PUC Minas</p>
+    <br />
+    <p>Os dados apresentados abaixo podem não estar condizentes com o cenário real.</p>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">País</th>
+                        <th scope="col">Casos Confirmados</th>
+                        <th scope="col">Mortes</th>
+                        <th scope="col">Recuperados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (ViewData["Infeccoes"] == null || !((List<InfeccaoPaisModel>)ViewData["Infeccoes"]).Any())
+                        {
+                            <tr>
+                                <td colspan="5">Sem dados disponíveis 😢</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var i in (List<InfeccaoPaisModel>)ViewData["Infeccoes"])
+                            {
+                                <tr>
+                                    <th scope="row">@i.InfeccaoPaisId</th>
+                                    <td>@i.Pais</td>
+                                    <td>@i.CasosConfirmados</td>
+                                    <td>@i.Mortes</td>
+                                    <td>@i.Recuperados</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

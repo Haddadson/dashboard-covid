@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DashboardCovid.Domain\DashboardCovid.Domain.csproj" />
+    <ProjectReference Include="..\DashboardCovid.Infra.CrossCutting.IoC\DashboardCovid.Infra.CrossCutting.IoC.csproj" />
+    <ProjectReference Include="..\DashboardCovid.Shared\DashboardCovid.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="dashboardCovid.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+
+
+</Project>

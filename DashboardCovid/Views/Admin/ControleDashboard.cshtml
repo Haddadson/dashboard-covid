@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewData["Title"] = "Controle Dashboard";
+}
+
+<script>
+    function editar(pais, casos, mortes, recuperados) {
+        document.querySelector('#pais').value = pais;
+        document.querySelector('#casosConfirmados').value = casos;
+        document.querySelector('#mortes').value = mortes;
+        document.querySelector('#recuperados').value = recuperados;
+    }
+
+</script>
+
+<h1>Controle de Administrador - Dashboard</h1>
+
+<div class="row">
+
+    <div class="col-12">
+
+        <h4>
+            Criar ou editar item:
+        </h4>
+        <hr>
+        <form method="POST" action='@Url.Action("CriarOuAtualizar", "Admin")'>
+            <div class="form-group">
+                <label for="pais">Nome do País</label>
+
+                <select id="pais" name="pais" class="form-control">
+                    @{ if (ViewData["Paises"] != null && ((List<string>)ViewData["Paises"]).Any())
+                        {
+                            foreach (var pais in (List<string>)ViewData["Paises"])
+                            {
+                                <option value="@pais">@pais</option>
+                            }
+                        }
+                        else
+                        {
+                            <option>Sem países disponíveis</option>
+                        }
+                    }
+                </select>
+
+                <label for="casosConfirmados">Casos Confirmados</label>
+                <input id="casosConfirmados" name="casosConfirmados" type="number" class="form-control" placeholder="Número de casos confirmados">
+
+                <label for="mortes">Mortes</label>
+                <input id="mortes" name="mortes" type="number" class="form-control" placeholder="Número de Mortes">
+
+                <label for="recuperados">Recuperados</label>
+                <input id="recuperados" name="recuperados" type="number" class="form-control" placeholder="Número de pessoas recuperadas">
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+            @if (ViewData["SucessoCadastro"] != null && (bool)ViewData["SucessoCadastro"])
+            {
+                <p>Registrado com sucesso!</p>
+            }
+            else if (ViewData["SucessoCadastro"] != null && !(bool)ViewData["SucessoCadastro"])
+            {
+                <p>Ocorreu um erro e o registro não pôde ser salvo, tente novamente.</p>
+                if (ViewData["MsgErro"] != null && !string.IsNullOrWhiteSpace((string)ViewData["MsgErro"]))
+                {
+                    <p>@ViewData["MsgErro"].ToString()</p>
+                }
+
+            }
+        </form>
+    </div>
+
+
+    <div class="col-12">
+
+        <br />
+        <br />
+
+        <table class="table table-bordered table-striped mb-0">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">País</th>
+                    <th scope="col">Casos Confirmados</th>
+                    <th scope="col">Mortes</th>
+                    <th scope="col">Recuperados</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Remover</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewData["Infeccoes"] == null || !((List<InfeccaoPaisModel>)ViewData["Infeccoes"]).Any())
+                {
+                    <tr>
+                        <td colspan="5">Sem dados disponíveis 😢</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var i in (List<InfeccaoPaisModel>)ViewData["Infeccoes"])
+                    {
+                        <tr>
+                            <th scope="row">@i.InfeccaoPaisId</th>
+                            <td>@i.Pais</td>
+                            <td>@i.CasosConfirmados</td>
+                            <td>@i.Mortes</td>
+                            <td>@i.Recuperados</td>
+                            <td>
+                                <button class="btn btn-warning" onclick="editar('@i.Pais', '@i.CasosConfirmados',
+                                                                            '@i.Mortes', '@i.Recuperados')">
+                                    Editar <i class="fas fa-edit"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <form method="POST" action='@Url.Action("Remover", "Admin")'>
+                                    <input hidden type="text" name="infeccaoId" value="@i.InfeccaoPaisId">
+                                    <input type="submit" value="Remover" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "Login para Administrador";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="inputLogin">Login: </label>
+        <input type="text" name="login" class="form-control" id="login" placeholder="Login">
+        <label for="inputSenha">Senha: </label>
+        <input type="password" name="senha" class="form-control" id="inputSenha" placeholder="Senha">
+    </div>
+    <input class="btn btn-primary" type="submit" value="Entrar" />
+    @if (ViewData["Autenticado"] != null && !(bool)ViewData["Autenticado"])
+    {
+        <br>
+        <span style="color: red">Dados Inválidos</span>
+    }
+</form>
